@@ -6,47 +6,47 @@
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>✨</text></svg>">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <style>
+    body {
+      background: black;
+      margin: 0;
+    }
+
+    #caption {
+      align-items: flex-end;
+      color: white;
+      display: flex;
+      font-family: -apple-system, BlinkMacSystemFont, avenir next, avenir, segoe ui, helvetica neue, helvetica, Cantarell, Ubuntu, roboto, noto, arial, sans-serif;
+      font-size: 2em;
+      height: calc(100vh - 0.25em);
+      line-height: 1.25em;
+      overflow: hidden;
+      margin: 0 0.25em 0.25em;
+      width: 100%;
+    }
   </style>
 </head>
 <body>
+  <div id="caption"></div>
   <script>
-    const div = document.createElement('div');
-    div.style.alignItems = 'flex-end';
-    div.style.backgroundColor = 'black';
-    div.style.top = '0';
-    div.style.color = 'white';
-    div.style.display = 'none';
-    div.style.fontFamily = 'Google Sans';
-    div.style.fontSize = '3vh';
-    div.style.lineHeight = '3.5vh';
-    div.style.maxHeight = '7vh';
-    div.style.overflow = 'hidden';
-    div.style.padding = '0.5vh 0.75vh';
-    div.style.position = 'fixed';
-    div.style.textAlign = 'start';
-    div.style.zIndex = '10000';
-  
+    const caption = document.getElementById('caption');
     const recognition = new webkitSpeechRecognition();
     recognition.continuous = true;
     recognition.interimResults = true;
-  
+
     recognition.onresult = event => {
-      div.style.display = 'flex';
       let transcript = '';
       for (let i = 0; i < event.results.length; i += 1) {
         transcript += event.results[i][0].transcript;
       }
-      div.textContent = transcript;
+      caption.textContent = transcript;
     };
     recognition.onend = event => recognition.start();
-  
-    div.onclick = event => {
-      recognition.onend = event => {};
+
+    caption.onclick = event => {
+      caption.textContent = '';
       recognition.abort();
-      div.remove();
     };
-  
-    document.body.appendChild(div);
+
     recognition.start();
   </script>
 </body>
